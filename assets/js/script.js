@@ -2,13 +2,30 @@
 var startBtn = document.querySelector('.start-button')
 var wordBlanksEl = document.querySelector('.word-blanks')
 var scoreel = document.querySelector('.score')
+var timerEl = document.querySelector('.timer-count')
 
 var validChars = 'abcdefghijklmnopqrstuvwxyz'
 var words = ['html', 'function', 'query', 'localstorage', 'timeout', 'intervals', 'javascript', 'terminal']
 var word
 var guessedCharacters = []
 var score = 0
-// timeleft variable
+var timeLeft = 15
+var intervalId
+
+
+function startCountdown() {
+    clearInterval(intervalId)
+    intervalId = setInterval(function() {
+        timeLeft--
+        timerEl.textContent = timeLeft
+        if (timeLeft === 0) {
+
+            clearInterval(intervalId)
+            wordBlanksEl.innerText = 'game over'
+        }
+
+    }, 1000)
+}
 
 function checkWin() {
    var DOMword = wordBlanksEl.textContent.split(' ').join('')
@@ -55,6 +72,7 @@ function startRound() {
     var randomIdx = Math.floor(Math.random() * words.length)
     word = words[randomIdx]
     renderCharacters()
+    startCountdown()
 }    
 
 startBtn.addEventListener('click', startRound)
