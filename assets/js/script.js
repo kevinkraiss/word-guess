@@ -1,13 +1,23 @@
 // select elements from DOM
 var startBtn = document.querySelector('.start-button')
 var wordBlanksEl = document.querySelector('.word-blanks')
+var scoreel = document.querySelector('.score')
 
 var validChars = 'abcdefghijklmnopqrstuvwxyz'
 var words = ['html', 'function', 'query', 'localstorage', 'timeout', 'intervals', 'javascript', 'terminal']
 var word
 var guessedCharacters = []
-// score variable
+var score = 0
 // timeleft variable
+
+function checkWin() {
+   var DOMword = wordBlanksEl.textContent.split(' ').join('')
+   if (word === DOMword) {
+    score++
+    scoreel.textContent = score
+    startRound()
+   }
+}
 
 function handleKeydown(event) {
     console.log(event.key)
@@ -30,20 +40,21 @@ function renderCharacters() {
             str += letter + ' '
             // push into string
         } else {
-        //else
             //push an _ into str
             str += '_ '
         }
     }
     // set textContent of wordBlanksEl to be str
     wordBlanksEl.textContent = str.trim()
+    checkWin()
 }
 
 function startRound() {
+    guessedCharacters = []
     // get random word from words array
-var randomIdx = Math.floor(Math.random() * words.length)
-word = words[randomIdx]
-renderCharacters()
+    var randomIdx = Math.floor(Math.random() * words.length)
+    word = words[randomIdx]
+    renderCharacters()
 }    
 
 startBtn.addEventListener('click', startRound)
